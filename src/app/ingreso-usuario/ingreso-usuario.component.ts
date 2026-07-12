@@ -1,6 +1,6 @@
-import { Component, EventEmitter, output, Output, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ingresoInversion } from '../ingreso-inversion-model';
+import { InversionService } from '../inversion.service';
 
 @Component({
   selector: 'app-ingreso-usuario',
@@ -10,15 +10,15 @@ import { ingresoInversion } from '../ingreso-inversion-model';
   styleUrl: './ingreso-usuario.component.css',
 })
 export class IngresoUsuarioComponent {
-  calcular = output<ingresoInversion>();
-
   inversionInicialIngresada = signal('0');
   inversionAnualIngresada = signal('0');
   rendimientoEsperadoIngresado = signal('5');
   duracionIngresada = signal('10');
 
+  constructor(private inversionService: InversionService) {}
+
   alEnviar() {
-    this.calcular.emit({
+    this.inversionService.calcularResultadosInversion({
       inversionInicial: +this.inversionInicialIngresada(),
       duracion: +this.duracionIngresada(),
       rendimientoEsperado: +this.rendimientoEsperadoIngresado(),
